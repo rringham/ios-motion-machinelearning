@@ -47,13 +47,17 @@ class ViewController: UIViewController {
             return
         }
         
-        let roll : Double = self.motionManager.deviceMotion!.attitude.roll
-        let yaw : Double = self.motionManager.deviceMotion!.attitude.yaw
-        let pitch : Double = self.motionManager.deviceMotion!.attitude.pitch
-        let qw : Double = self.motionManager.deviceMotion!.attitude.quaternion.w
-        let qx : Double = self.motionManager.deviceMotion!.attitude.quaternion.x
-        let qy : Double = self.motionManager.deviceMotion!.attitude.quaternion.y
-        let qz : Double = self.motionManager.deviceMotion!.attitude.quaternion.z
+        guard let deviceMotion : CMDeviceMotion = self.motionManager.deviceMotion! else {
+            return
+        }
+        
+        let roll : Double = deviceMotion.attitude.roll
+        let yaw : Double = deviceMotion.attitude.yaw
+        let pitch : Double = deviceMotion.attitude.pitch
+        let qw : Double = deviceMotion.attitude.quaternion.w
+        let qx : Double = deviceMotion.attitude.quaternion.x
+        let qy : Double = deviceMotion.attitude.quaternion.y
+        let qz : Double = deviceMotion.attitude.quaternion.z
         
         let prediction = self.neuralNetwork.predict([roll, yaw, pitch, qw, qx, qy, qz])[0]
         if prediction >= 0.9 {
